@@ -40,14 +40,21 @@
           <q-tab-panel name="user-details">
             <UserDetails
               ref="user-details"
-              :allow_action="allow_action"
+              v-model:allow_action="allow_action"
+              :user_details="user_details"
+            />
+          </q-tab-panel>
+          <q-tab-panel name="e-signature">
+            <Signature
+              ref="signature"
+              v-model:allow_action="allow_action"
               :user_details="user_details"
             />
           </q-tab-panel>
           <q-tab-panel name="account-information">
             <AccountInformation
               ref="account-information"
-              :allow_action="allow_action"
+              v-model:allow_action="allow_action"
               :user_details="user_details"
             />
           </q-tab-panel>
@@ -71,10 +78,12 @@
 
 <script>
 import UserDetails from './TabContent/UserDetailsTab';
+import Signature from './TabContent/SignatureTab';
 import AccountInformation from './TabContent/InformationTab';
 export default {
   components: {
     UserDetails,
+    Signature,
     AccountInformation
   },
   props: ['user_details'],
@@ -96,6 +105,11 @@ export default {
         this.action_icon = "offline_pin";
         this.action_color = "primary";
       }
+      else if (new_value === 'e-signature') {
+        this.action_label = "Upload";
+        this.action_icon = "upload";
+        this.action_color = "red-14";
+      }
       else if (new_value === 'account-information') {
         this.action_label = "Update";
         this.action_icon = "offline_pin";
@@ -114,6 +128,10 @@ export default {
           label: "User Details"
         },
         {
+          name: "e-signature",
+          label: "E-Signature"
+        },
+        {
           name: "account-information",
           label: "Account Information"
         }
@@ -129,6 +147,9 @@ export default {
       if (this.tab === 'user-details') {
         ref = "user-details";
       }
+      else if (this.tab === 'e-signature') {
+        ref = "signature";
+      }
       else if (this.tab === 'account-information') {
         ref = "account-information";
       }
@@ -137,6 +158,9 @@ export default {
         let confirm_message = "";
         if (this.tab === 'user-details') {
           confirm_message = "Are you sure to update your details?";
+        }
+        else if (this.tab === 'e-signature') {
+          confirm_message = "Are you sure to upload your e-signature?";
         }
         else if (this.tab === 'account-information') {
           confirm_message = "Are you sure to update account?"

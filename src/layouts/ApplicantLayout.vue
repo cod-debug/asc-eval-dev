@@ -15,7 +15,7 @@
               <b>{{todayFormatted}}</b>
             </div>
           </div>
-          
+
           <div class="col-3 text-right">
             <div class="text-center profile-wrapper">
               <q-avatar>
@@ -105,6 +105,7 @@
     data: () => ({
       currentTime: "",
       todayFormated: "",
+      user_details: null,
     }),
     watch: {
     },
@@ -113,6 +114,11 @@
       todayFormatted() {
         let currentDate = new Date();
         return date.formatDate(currentDate,'dddd, MMMM D, YYYY');
+      },
+      user_name() {
+        let fname = this.user_details?.fname || "N/A";
+        let lname = this.user_details?.lname || "";
+        return fname + " " + lname[0] + "!"
       }
     },
     components: {
@@ -125,6 +131,8 @@
       setInterval(() => {
         vm.getCurrentDateTime();
       }, 1000);
+
+      this.get_user_details();
     },
     methods: {
       getCurrentDateTime() {
@@ -145,6 +153,30 @@
       view_profile(){
         this.$router.push({name: "user-profile"});
       },
+
+      show_context_menu(event) {
+        // console.log('event', event)
+      },
+
+      async get_user_details() {
+      // this.$spinner.show('Loading...')
+      try {
+        const {data, status} = await this.$store.dispatch('sessions/_user_logged');
+        // console.log('data', data)
+        // console.log('status', status)
+        if ([200,201].includes(status)) {
+          this.user_details = data || null;
+
+          this.$store.commit('sessions/set_details', data)
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
+
+      this.$nextTick(() => {
+        // this.$spinner.hide();
+      })
+    },
 
 
       confirm_logout() {
@@ -170,7 +202,7 @@
           window.location.href = process.env.ADMIN_BASE_URL;
       },
     },
-    
+
     setup() {
       return {
         drawer: ref(false),

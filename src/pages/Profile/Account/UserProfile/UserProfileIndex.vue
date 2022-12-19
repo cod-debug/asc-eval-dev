@@ -71,6 +71,13 @@
       :user_details="user_details"
     />
 
+
+    <div v-if="is_loading" class="text-center q-pa-lg">
+      <div class="loading-page">
+        <q-spinner-ios color="white" size="3rem" />
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -81,7 +88,8 @@ export default {
     UpdateProfileDialog
   },
   data: () => ({
-    user_details: {}
+    user_details: {},
+    is_loading: false,
   }),
 
   watch: {
@@ -120,6 +128,7 @@ export default {
         return;
       }
       // this.$spinner.show('Loading...')
+      this.is_loading = true;
       try {
         // const {data, status} = await this.$store.dispatch('common/_user_logged');
         const {data, status} = await this.$store.dispatch('admin_api/getOne', {id: user_id})
@@ -133,7 +142,8 @@ export default {
       }
 
       this.$nextTick(() => {
-        this.$spinner.hide();
+        // this.$spinner.hide();
+        this.is_loading = false;
       })
     },
 
@@ -145,6 +155,8 @@ export default {
       //   position: "top",
       //   color: "negative",
       // })
+
+      // console.log('dfasdfsd', this.$refs['profile-dialog'])
 
       this.$refs['profile-dialog'].show_dialog();
     }

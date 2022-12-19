@@ -8,6 +8,7 @@ import s1 from "./s1";
 import s2 from "./s2";
 import ascUser from "./asc-user";
 import admin_api from "./admin_api";
+import sessions from "./sessions";
 
 // import example from './module-example'
 
@@ -32,6 +33,7 @@ export default store(function (/* { ssrContext } */) {
       s2,
       ascUser,
       admin_api,
+      sessions
     },
 
     // enable strict mode (adds overhead!)

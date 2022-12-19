@@ -27,7 +27,6 @@
                 bottom-slots
                 label="Email Address"
                 v-model="account.email"
-                v-required
                 disable
                 class="no-pointer"
                 type="email"
@@ -40,7 +39,6 @@
                 bottom-slots
                 label="Password"
                 v-model="account.password"
-                v-required
                 :type="show_password ? 'text' : 'password'"
                 :rules="[
                   val => val && val.length > 0 || 'Password is required',
@@ -56,11 +54,7 @@
                     :name="show_password ? 'visibility' : 'visibility_off'"
                     class="cursor-pointer"
                     @click="show_hide_password('password')"
-                  >
-                    <custom-tooltip
-                      :message="`Click to ${show_password ? 'hide' : 'show'} password`"
-                    />
-                  </q-icon>
+                  />
                 </template>
               </q-input>
 
@@ -99,7 +93,6 @@
                 bottom-slots
                 label="Confirm Password"
                 v-model="account.confirm_password"
-                v-required
                 :type="show_confirm_password ? 'text' : 'password'"
                 :rules="[
                   val => val === account.password || 'Password not match',
@@ -111,11 +104,7 @@
                     :name="show_confirm_password ? 'visibility' : 'visibility_off'"
                     class="cursor-pointer"
                     @click="show_hide_password('confirm_password')"
-                  >
-                    <custom-tooltip
-                      :message="`Click to ${show_confirm_password ? 'hide' : 'show'} password`"
-                    />
-                  </q-icon>
+                  />
                 </template>
               </q-input>
             </div>
@@ -188,8 +177,8 @@ export default {
     },
 
     has_lowercase(val) {
-      console.log('val', val)
-      console.log('val', /[a-z]/.test(val))
+      // console.log('val', val)
+      // console.log('val', /[a-z]/.test(val))
       return /[a-z]/.test(val)
     },
 
