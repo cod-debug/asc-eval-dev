@@ -30,7 +30,7 @@
               </p>
               <p>
                 <span class="material-icons">phone_in_talk</span>
-                {{ user_details?.company?.phone || "NO CONTACT" }}
+                {{ user_details?.phone || "NO CONTACT" }}
               </p>
               <p>
                 <span class="material-icons">business</span>
