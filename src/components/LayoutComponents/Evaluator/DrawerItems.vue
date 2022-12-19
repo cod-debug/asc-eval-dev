@@ -89,12 +89,6 @@ export default {
               count: 0,
               path: "/asc/page/application/s2/lists",
             },
-            {
-              icon: "fa-solid fa-caret-right",
-              label: "Special Clearing Request",
-              count: 0,
-              path: "/asc/page/application/s2/special",
-            }
           ]
         },
         {
@@ -111,7 +105,7 @@ export default {
           vm.drawerItems[0].children[1].count = data.multipleCount;
           vm.drawerItems[0].children[2].count = data.specialCount;
         }
-      }, 1000);
+      }, 10000);
     }
   },
   mounted() {

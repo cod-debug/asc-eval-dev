@@ -2,7 +2,7 @@
   <div class="q-pa-md q-mt-lg q-ml-lg">
     <q-card bordered class="my-card" elevated>
       <q-card-section class="row">
-        <div class="text-h6 page-title text-dark col-md-6"><q-icon name="list" />  S1 APPLICATION -  SPECIAL</div>
+        <div class="text-h6 page-title text-dark col-md-6"><q-icon name="list" />  S2 APPLICATION -  INDIVIDUAL</div>
         <div class="text-right col-md-6">
           <!-- <q-btn label="NEW APPLICATION" elevated class="q-mr-sm position-right" size="md" icon="add" color="red-14" /> -->
           <q-btn :label="localTimer == 0 ? '' : localTimer + ' sec'" elevated size="md" icon="sync" @click="refresh" :disabled="localTimer > 0" color="primary" />
@@ -54,12 +54,13 @@
 
       
 
-        <div class="table_container" v-if="!is_loading">
-          <div v-if="table_data.length <= 0" class="no-data-found q-mt-md">
+        <div class="table_container q-mt-md" v-if="!is_loading">
+          <div v-if="table_data.length <= 0" class="no-data-found">
             <q-icon name="warning" /> NO DATA FOUND...
           </div>
           <q-table :columns="columns" 
           v-else
+          flat 
           bordered 
           :rows="table_data" 
           row-key="id" 
@@ -69,7 +70,7 @@
             <template #body="props">
               <q-tr
                 :props="props"
-                :class="(hasOwner(props.row)) ? (isOwned(props.row)) ? 'bg-yellow' : 'bg-hrey-4': 'bg-white'"
+                :class="(hasOwner(props.row)) ? (isOwned(props.row)) ? 'bg-yellow' : 'bg-grey-4': 'bg-white'"
                 hover
                 style="cursor: pointer"
                 @click="update(props.row)"
@@ -77,6 +78,7 @@
                 <q-td
                   key="referrence_code"
                   :props="props"
+                  :class="`bg-${current_id_bg}`"
                 >
                   {{ props.row.referrence_code || '--' }}
                 </q-td>
@@ -167,6 +169,7 @@
 </template>
 
 <script>
+  import { stat } from "fs";
 import { Notify } from "quasar";
   export default {
     data: () => ({
@@ -180,14 +183,19 @@ import { Notify } from "quasar";
           code: 'ORIGINAL',
           count: 0
         },
-        {
-          name: "REVISION",
-          code: 'REVISION',
-          count: 0
-        },
+        // {
+        //   name: "REVISION",
+        //   code: 'REVISION',
+        //   count: 0
+        // },
         {
           name: "COMPLIANCE",
           code: 'COMPLIANCE',
+          count: 0
+        },
+        {
+          name: "TOA",
+          code: 'TOA',
           count: 0
         },
         /*{
@@ -199,16 +207,19 @@ import { Notify } from "quasar";
 
       legends: [
         {
+          color: "blue",
+          theme_color: "blue-2",
+          title: "ORIGINAL",
+        },
+        {
           color: "gold",
-          title: "FOR APPROVAL",
+          theme_color: "gold",
+          title: "FOR COMPLIANCE",
         },
         {
           color: "green",
-          title: "APPROVED",
-        },
-        {
-          color: "red",
-          title: "DISAPPROVED",
+          theme_color: "green-4",
+          title: "TOA",
         }
       ],
 
@@ -235,7 +246,15 @@ import { Notify } from "quasar";
     computed:{
       userID(){
         return localStorage.getItem('ui');
-      }
+      },
+      current_id_bg(){
+        console.log( this.legends.filter((i) => {
+          return i.title == this.active_tab;
+        })[0].color, "COMPUTED");
+        return this.legends.filter((i) => {
+          return i.title == this.active_tab;
+        })[0].theme_color;
+      },
     },
     mounted(){
       this.initApp();
@@ -298,7 +317,7 @@ import { Notify } from "quasar";
         this.selected_item = row;
         if(row.isLocked){
           if(this.isOwned(row)){
-            this.$router.push({ name: "individual-application-update", params: { id: row.id } });
+            this.$router.push({ name: "individual-application-update-s2", params: { id: row.id } });
           } else {
             Notify.create({
               message: "This application does not belong to you.",
@@ -323,17 +342,18 @@ import { Notify } from "quasar";
         
         let payload = {
           data: {
-              "form_group": "INDIVIDUAL",
-              "application_type": ["SPECIAL SCREENING", "SPECIAL SCREENING AND CLEARING"],
-              "processType": vm.active_tab,
-              "search": vm.search
+            "application_type": ["REGULAR", "BATCH"],
+            "form_group": "INDIVIDUAL",
+            "search": vm.search,
+            "process_type": vm.active_tab,
+            "form_type": "s2",
           },
           params: {
             take: vm.take,
             page: vm.current
           }
         }
-        let {data, status} = await vm.$store.dispatch("s1/getS1Applications", payload);
+        let {data, status} = await vm.$store.dispatch("s2/getS2Applications", payload);
         if([200, 201].includes(status)){
           vm.table_data = data.data.map((item) => {
             return {...item, 
@@ -353,17 +373,18 @@ import { Notify } from "quasar";
         let vm = this;
         let payload = {
           data: {
-              "form_group": "INDIVIDUAL",
-              "application_type": ["SPECIAL SCREENING", "SPECIAL SCREENING AND CLEARING"],
-              "processType": processType,
-              "search": vm.search
+            "application_type": ["REGULAR", "BATCH"],
+            "form_group": "INDIVIDUAL",
+            "search": vm.search,
+            "process_type": processType,
+            "form_type": "s2",
           },
           params: {
             take: vm.take,
             page: vm.current
           }
         }
-        let {data, status} = await vm.$store.dispatch("s1/getS1Applications", payload);
+        let {data, status} = await vm.$store.dispatch("s2/getS2Applications", payload);
 
         return data.count;
       },

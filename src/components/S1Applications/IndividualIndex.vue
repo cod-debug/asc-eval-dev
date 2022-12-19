@@ -54,8 +54,12 @@
 
       
 
-        <div class="table_container" v-if="!is_loading">
+        <div class="table_container q-mt-md" v-if="!is_loading">
+          <div v-if="table_data.length <= 0" class="no-data-found">
+            <q-icon name="warning" /> NO DATA FOUND...
+          </div>
           <q-table :columns="columns" 
+          v-else
           flat 
           bordered 
           :rows="table_data" 
@@ -66,7 +70,7 @@
             <template #body="props">
               <q-tr
                 :props="props"
-                :class="(hasOwner(props.row)) ? (isOwned(props.row)) ? 'bg-yellow' : 'bg-hrey-4': 'bg-white'"
+                :class="(hasOwner(props.row)) ? (isOwned(props.row)) ? 'bg-yellow' : 'bg-grey-4': 'bg-white'"
                 hover
                 style="cursor: pointer"
                 @click="update(props.row)"
@@ -74,6 +78,7 @@
                 <q-td
                   key="referrence_code"
                   :props="props"
+                  :class="`bg-${current_id_bg}`"
                 >
                   {{ props.row.referrence_code || '--' }}
                 </q-td>
@@ -101,7 +106,7 @@
                   key="type_medium_name"
                   :props="props"
                 >
-                  {{ props.row.type_medium_name.join(", ") }}
+                  {{ Array.isArray(props.row.type_medium_name) ? props.row.type_medium_name.join(", ") : props.row.type_medium_name }}
                 </q-td>
                 <q-td
                   key="status"
@@ -125,7 +130,7 @@
             </template>
           </q-table>
 
-          <div class="text-right q-mt-md">
+          <div class="text-right q-mt-md" v-if="max_page > 0">
             <q-pagination v-model="current"
                           @update:model-value="getList()"
                           :max="max_page"
@@ -198,14 +203,17 @@ import { Notify } from "quasar";
       legends: [
         {
           color: "blue",
+          theme_color: "blue-2",
           title: "ORIGINAL",
         },
         {
           color: "gold",
-          title: "FOR COMPLIANCE",
+          theme_color: "yellow-6",
+          title: "COMPLIANCE",
         },
         {
           color: "green",
+          theme_color: "green-4",
           title: "REVISION",
         }
       ],
@@ -233,7 +241,15 @@ import { Notify } from "quasar";
     computed:{
       userID(){
         return localStorage.getItem('ui');
-      }
+      },
+      current_id_bg(){
+        console.log( this.legends.filter((i) => {
+          return i.title == this.active_tab;
+        })[0].color, "COMPUTED");
+        return this.legends.filter((i) => {
+          return i.title == this.active_tab;
+        })[0].theme_color;
+      },
     },
     mounted(){
       this.initApp();

@@ -26,7 +26,7 @@ const routes = [
       {
         name: "dashboard",
         path: "",
-        component: () => import("pages/Evaluator/EvaluatorIndex.vue"),
+        component: () => import("pages/Profile/EvaluatorIndex.vue"),
       },
       {
         name: "individual-application-list",
@@ -51,7 +51,7 @@ const routes = [
       {
         name: "dashboard",
         path: "",
-        component: () => import("pages/Evaluator/EvaluatorIndex.vue"),
+        component: () => import("pages/Profile/EvaluatorIndex.vue"),
       },
       {
         name: "individual-application-list-s2",
@@ -59,12 +59,29 @@ const routes = [
         component: () => import("pages/S2Applications/IndividualApp.vue"),
       },
       {
+        name: "individual-application-update-s2",
+        path: "application/s2/update/:id",
+        component: () => import("pages/S2Applications/DetailsIndex.vue"),
+      },
+      {
         name: "announcement-view",
         path: "announcement",
         component: () => import("pages/Announcements/AnnouncementView.vue"),
       },
     ]
-  }
+  },
+  {
+    path: "/account",
+    name: "account",
+    component: () => import("layouts/ApplicantLayout.vue"),
+    children: [
+      {
+        path: "user-profile",
+        name: "user-profile",
+        component: () => import('pages/Profile/Account/UserProfile/UserProfileIndex.vue'),
+      },
+    ]
+  },
 ];
 
 export default routes;

@@ -12,8 +12,11 @@
         </q-card-section>
   
         <q-separator inset />
-  
-        <q-card-section>
+        
+        <div v-if="announcementsList.length <= 0" class="no-data-found q-mt-md">
+          <q-icon name="warning" /> NO DATA FOUND...
+        </div>
+        <q-card-section v-else>
             <q-card class="bg-red-1 q-mb-md shadow-6" v-for="(item, key) in announcementsList" :key="key">
                 <q-card-section class="row">
                     <div class="page-title text-red-15 col-12 col-md-8">
@@ -39,6 +42,7 @@
             </q-card>
 
             <q-pagination v-model="current"
+                            v-if="max_page > 0"
                             @update:model-value="getAllAnnouncements()"
                             :max="max_page"
                             direction-links

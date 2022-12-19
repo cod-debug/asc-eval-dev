@@ -126,3 +126,19 @@ export const getAllAnnouncements = async ({ commit }, payload) => {
   })
   return res;
 }
+
+export const getOne = async ({ commit }, payload) => {
+  let res = null;
+  try {
+    res = await axios({
+      url: `${getEnv("ADMIN_API_BASE_URL")}/users/getone`,
+      params: payload,
+      method: "get",
+      headers: headers,
+    })
+  } catch (e) {
+    res.data = e
+    res.status = 400
+  }
+  return res;
+}

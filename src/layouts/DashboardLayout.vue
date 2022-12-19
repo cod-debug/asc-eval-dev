@@ -75,11 +75,13 @@
     methods: {
       getCurrentDateTime() {
         let currentdate = new Date();
-        let hours = currentdate.getHours() > 12 ? currentdate.getHours() - 12 : currentdate.getHours();
-        hours = hours <= 10 ? '0' + hours : hours;
+        let hours = currentdate.getHours() > 12 ? currentdate.getHours() - 12 : currentdate.getHours() == 0 ? '12' : currentdate.getHours();
+        let mins = currentdate.getMinutes();
+        mins = mins < 10 ? "0"+ mins : mins;
+        hours = hours < 10 ? '0' + hours : hours;
         let ampm = currentdate.getHours() > 12 ? "PM" : "AM";
 
-        this.currentTime = `${hours}:${currentdate.getMinutes()}:${currentdate.getSeconds() < 10 ? '0' + currentdate.getSeconds() : currentdate.getSeconds()} ${ampm}`;
+        this.currentTime = `${hours}:${mins}:${currentdate.getSeconds() < 10 ? '0'+currentdate.getSeconds(): currentdate.getSeconds()} ${ampm}`;
       },
       getToday() {
         let currentdate = new Date();

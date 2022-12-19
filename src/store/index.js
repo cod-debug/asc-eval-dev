@@ -5,6 +5,7 @@ import users from "./users";
 import account from "./account";
 import company from "./company";
 import s1 from "./s1";
+import s2 from "./s2";
 import ascUser from "./asc-user";
 import admin_api from "./admin_api";
 
@@ -28,6 +29,7 @@ export default store(function (/* { ssrContext } */) {
       account,
       company,
       s1,
+      s2,
       ascUser,
       admin_api,
     },

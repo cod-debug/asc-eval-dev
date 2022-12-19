@@ -42,7 +42,7 @@ export default route(function ({ store, ssrContext }) {
   });
   Router.beforeEach((to, from, next) => {
     if (to.requiresAuth && !accessToken) {
-      next({ name: "home" });
+      next({ name: "home" });image.png
     } else next();
   });
 

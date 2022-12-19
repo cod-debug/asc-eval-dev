@@ -15,8 +15,61 @@
               <b>{{todayFormatted}}</b>
             </div>
           </div>
-          <div class="col-sm-3">
+          
+          <div class="col-3 text-right">
+            <div class="text-center profile-wrapper">
+              <q-avatar>
+                <img src="~assets/images/user-profile-default.png">
+              </q-avatar>
+              <label class="profile-name">
+                Hi {{ user_name?.toUpperCase() || "Unknown" }}
+              </label>
+              <q-popup-proxy :offset="[10, 10]"
+                @show="show_context_menu"
+              >
+                <q-banner
+                  style="border: 1px solid #c5140c;border-radius: 4px;"
+                  class="profile-context-menu"
+                >
+                  <div class="mat-menu-content ng-tns-c149-38">
+                    <div class="avatar-content text-center q-px-md q-pt-md">
+                      <q-avatar size="80px">
+                        <img src="~assets/images/user-profile-default.png">
+                      </q-avatar>
+                    </div>
+                    <div class="avatar-details text-center q-px-md q-pt-md">
+                      <b class="text-red-14">Ad Standard Council</b>
+                      <p class="user-role text-red-14">
+                        EVALUATOR
+                      </p>
+                    </div>
 
+                    <q-separator class="q-my-lg" />
+
+                    <q-list>
+                      <q-item clickable v-ripple
+                        @click="view_profile"
+                      >
+                        <q-item-section avatar>
+                          <q-icon color="primary" name="arrow_right" />
+                        </q-item-section>
+                        <q-item-section>View Profile</q-item-section>
+                      </q-item>
+
+                      <q-item clickable v-ripple
+                        @click="confirm_logout"
+                      >
+                        <q-item-section avatar>
+                          <q-icon color="primary" name="arrow_right" />
+                        </q-item-section>
+
+                        <q-item-section>Logout</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </div>
+                </q-banner>
+              </q-popup-proxy>
+            </div>
           </div>
         </div>
 
@@ -44,6 +97,7 @@
   import { ref } from 'vue'
   import { date } from 'quasar'
   import Drawer from "components/LayoutComponents/Drawer/DrawerIndex.vue";
+  import Swal from "sweetalert2";
 
   const miniState = ref(false)
 
@@ -75,18 +129,48 @@
     methods: {
       getCurrentDateTime() {
         let currentdate = new Date();
-        let hours = currentdate.getHours() > 12 ? currentdate.getHours() - 12 : currentdate.getHours();
+        let hours = currentdate.getHours() > 12 ? currentdate.getHours() - 12 : currentdate.getHours() == 0 ? '12' : currentdate.getHours();
+        let mins = currentdate.getMinutes();
+        mins = mins < 10 ? "0"+ mins : mins;
         hours = hours < 10 ? '0' + hours : hours;
         let ampm = currentdate.getHours() > 12 ? "PM" : "AM";
 
-        this.currentTime = `${hours}:${currentdate.getMinutes()}:${currentdate.getSeconds() < 10 ? '0'+currentdate.getSeconds(): currentdate.getSeconds()} ${ampm}`;
+        this.currentTime = `${hours}:${mins}:${currentdate.getSeconds() < 10 ? '0'+currentdate.getSeconds(): currentdate.getSeconds()} ${ampm}`;
       },
       getToday() {
         let currentdate = new Date();
 
-      }
-    },
+      },
 
+      view_profile(){
+        this.$router.push({name: "user-profile"});
+      },
+
+
+      confirm_logout() {
+        Swal.fire({
+          title: 'Logging Out',
+          text: 'Are you sure you want to Logout?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Logout',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // this.$q.sessionStorage.clear();
+            // this.$q.localStorage.clear();
+            this.logout();
+          }
+        });
+      },
+
+      logout(){
+          localStorage.clear();
+          window.location.href = process.env.ADMIN_BASE_URL;
+      },
+    },
+    
     setup() {
       return {
         drawer: ref(false),

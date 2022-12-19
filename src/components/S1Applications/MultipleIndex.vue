@@ -14,7 +14,15 @@
       <q-card-section>
         <div class="row q-my-lg">
           <div class="col-md-9 col-sm-12">
-            <q-input outlined label="Search Applications" class="q-mt-md"  v-model="search" @blur="getList()" />
+            <form @submit.prevent="getList(true)" method="POST" >
+              <q-input bottom-slots  v-model="search" outlined label="Search Applications" hint="Hit ''Enter'' key or click search icon to search application.">
+                <template v-slot:append>
+                  <!-- <q-icon v-if="search !== ''" name="close" @click="search = '' && getList(true)" class="cursor-pointer" /> -->
+                  <q-icon name="search" @click="getList(true)" />
+                </template>
+              </q-input>
+              <!-- <q-input outlined label="Search Applications" class="q-mt-md"  v-model="search" @blur="getList(true)" /> -->
+            </form>
           </div>
           <div class="col-md-3 q-px-md col-sm-12">
             <div class="shadow-2 q-pa-sm">
@@ -46,8 +54,12 @@
 
       
 
-        <div class="table_container" v-if="!is_loading">
+        <div class="table_container q-mt-md" v-if="!is_loading">
+          <div v-if="table_data.length <= 0" class="no-data-found">
+            <q-icon name="warning" /> NO DATA FOUND...
+          </div>
           <q-table :columns="columns" 
+          v-else
           flat 
           bordered 
           :rows="table_data" 
@@ -93,7 +105,7 @@
                   key="type_medium_name"
                   :props="props"
                 >
-                  {{ props.row.type_medium_name.join(", ") }}
+                  {{ Array.isArray(props.row.type_medium_name) ? props.row.type_medium_name.join(", ") : props.row.type_medium_name }}
                 </q-td>
                 <q-td
                   key="status"
@@ -117,7 +129,7 @@
             </template>
           </q-table>
 
-          <div class="text-right q-mt-md">
+          <div class="text-right q-mt-md" v-if="max_page > 0">
             <q-pagination v-model="current"
                           @update:model-value="getList()"
                           :max="max_page"
@@ -301,12 +313,14 @@ import { Notify } from "quasar";
           this.lockModal = true;
         }
       },
-      
 
-      async getList(){
+      async getList(is_search){
         let vm = this;
-        vm.is_loading = true;
+        if(is_search){
+          vm.current = 1;
+        }
         
+        vm.is_loading = true;
         let payload = {
           data: {
             "application_type": ["REGULAR"],
