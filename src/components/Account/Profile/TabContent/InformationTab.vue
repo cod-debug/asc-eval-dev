@@ -39,7 +39,7 @@
                 bottom-slots
                 label="Password"
                 v-model="account.password"
-                :type="show_password ? 'text' : 'password'"
+                :type="show_password ? 'text-pass' : 'password'"
                 :rules="[
                   val => val && val.length > 0 || 'Password is required',
                   val => val && is_8_char_length(val) || 'Password must be at least 8 characters',
@@ -93,7 +93,7 @@
                 bottom-slots
                 label="Confirm Password"
                 v-model="account.confirm_password"
-                :type="show_confirm_password ? 'text' : 'password'"
+                :type="show_confirm_password ? 'text-pass' : 'password'"
                 :rules="[
                   val => val === account.password || 'Password not match',
                   val => val && val.length > 0 || 'Password is required'

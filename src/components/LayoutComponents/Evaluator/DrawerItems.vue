@@ -104,8 +104,9 @@ export default {
           vm.drawerItems[0].children[0].count = data.individualCount;
           vm.drawerItems[0].children[1].count = data.multipleCount;
           vm.drawerItems[0].children[2].count = data.specialCount;
+          vm.drawerItems[1].children[0].count = data.s2InvididualCount;
         }
-      }, 10000);
+      }, 1000);
     }
   },
   mounted() {
