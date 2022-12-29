@@ -10,7 +10,7 @@
             <q-card-section class="q-pt-none">
             <q-form>
                 <q-select label="Select Reason:" :options="reason_options" outlined v-model="reasons" class="q-my-md" multiple option-label="reason" option-value="label" />
-                <q-input type="textarea" label="Remarks:" outlined class="q-my-md" />
+                <q-input type="textarea" label="Remarks:" outlined class="q-my-md" v-model="remarks" />
             </q-form>
             </q-card-section>
 
@@ -36,6 +36,7 @@
         data: () => ({
             show_disapprove_modal: false,
             reason_options: [],
+            remarks: "",
             reasons: [],
         }),
         computed: {

@@ -99,7 +99,7 @@
         <q-btn color="red-14" label="FORWARD TO AD SPECIALIST" @click="verifyApp(true)" icon="verified" class="q-mr-sm" />
         <q-btn color="red-14" label="REJECT" icon="unpublished" @click="disapproveApp" />
       </q-card-section>
-      <disapprove-modal :disapproveFunction="verifyApp" />
+      <disapprove-modal :disapproveFunction="verifyApp" ref="disapprove_app_modal" />
     </q-card>
   </div>
 </template>
@@ -290,7 +290,7 @@ import { stat } from "fs";
         vm.type_of_medium_new = data.type_of_medium;
         vm.affiliate_id = data.company.affiliateID;;
         vm.affiliate_name = data.company?.affiliate?.name || "--";
-        vm.isMoving = data.type_of_medium[0].isMoving == 0 ? false : true;
+        vm.isMoving = data.type_of_medium.length > 0 ? data.type_of_medium[0].isMoving == 0 ? false : true : false;
         // alert(vm.isMoving);
         
         this.selected_item = data;
@@ -343,8 +343,22 @@ import { stat } from "fs";
           id: this.$route.params.id,          
           data: {
             isVerified: ver,
+            remarks: [],
+            reasons: [],
           }
         }
+
+        if(!ver){
+         
+          let disapprove_modal_data = vm.$refs['disapprove_app_modal'];
+
+          payload.data = {
+            isVerified: ver,
+            remarks: [disapprove_modal_data.remarks],
+            reasons: disapprove_modal_data.reasons_parsed,
+          }
+        }
+
         let {data, status} = await vm.$store.dispatch("s1/verifyApp", payload);
 
         if([200, 201].includes(status)){
