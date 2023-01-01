@@ -16,7 +16,7 @@
             <strong class="text-red-14 bold">Submission Date: September 28, 2022</strong>
           </div>
           <div class="col-md-6 col-lg-6 col-sm-12 text-right">
-            <q-badge :color="paymentStatusColor(payment_status).bg" :class="`q-pa-sm text-${paymentStatusColor(payment_status).text}`"><strong>{{payment_status}}: {{intFormatter(amount)}}</strong></q-badge>
+            <q-badge :color="paymentStatusColor(payment_status).bg" :class="`q-pa-sm text-${paymentStatusColor(payment_status).text}`"><strong>{{payment_status || "N/A"}}: {{intFormatter(amount)}}</strong></q-badge>
           </div>
         </q-section>
         <div class="row q-mt-md">
@@ -242,6 +242,12 @@ import { stat } from "fs";
               text: "white",
             };
             break;
+            
+          default: 
+            return {
+              bg: "grey",
+              text: "white",
+            };
         }
       },
       disapproveApp(){
