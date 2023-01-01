@@ -340,6 +340,7 @@ import { Notify } from "quasar";
             "application_type": ["REGULAR", "BATCH"],
             "form_group": "INDIVIDUAL",
             "search": vm.search,
+            "form_type": "s1",
             "process_type": vm.active_tab
           },
           params: {
@@ -370,6 +371,7 @@ import { Notify } from "quasar";
             "application_type": ["REGULAR", "BATCH"],
             "form_group": "INDIVIDUAL",
             "search": vm.search,
+            "form_type": "s1",
             "process_type": processType
           },
           params: {
