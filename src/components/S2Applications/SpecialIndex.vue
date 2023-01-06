@@ -325,7 +325,7 @@ import { Notify } from "quasar";
           data: {
               "form_group": "INDIVIDUAL",
               "application_type": ["SPECIAL CLEARING", "SPECIAL SCREENING AND CLEARING"],
-              "processType": vm.active_tab,
+              "process_type": vm.active_tab,
               "form_type": "s2",
               "search": vm.search
           },
@@ -356,7 +356,7 @@ import { Notify } from "quasar";
           data: {
             "form_group": "INDIVIDUAL",
             "application_type": ["SPECIAL CLEARING", "SPECIAL SCREENING AND CLEARING"],
-            "processType": processType,
+            "process_type": processType,
             "form_type": "s2",
             "search": vm.search
           },
