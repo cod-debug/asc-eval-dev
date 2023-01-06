@@ -1,3 +1,16 @@
 <template>
-  <h1>Mulitiple Applications </h1>
+  <MultipleIndex />
 </template>
+
+<script>
+  import MultipleIndex from "components/S2Applications/MultipleIndex";
+
+	export default {
+		data: () => ({
+
+    }),
+		components: {
+      MultipleIndex
+    }
+	}
+</script>

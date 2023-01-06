@@ -85,9 +85,21 @@ export default {
           children: [
             {
               icon: "fa-solid fa-caret-right",
-              label: "Application List",
+              label: "Individual Applications",
               count: 0,
               path: "/asc/page/application/s2/lists",
+            },
+            {
+              icon: "fa-solid fa-caret-right",
+              label: "Multiple Applications",
+              count: 0,
+              path: "/asc/page/application/s2/multiple",
+            },
+            {
+              icon: "fa-solid fa-caret-right",
+              label: "Special Applications",
+              count: 0,
+              path: "/asc/page/application/s2/special",
             },
           ]
         },
@@ -105,6 +117,8 @@ export default {
           vm.drawerItems[0].children[1].count = data.multipleCount;
           vm.drawerItems[0].children[2].count = data.specialCount;
           vm.drawerItems[1].children[0].count = data.s2InvididualCount;
+          vm.drawerItems[1].children[1].count = data.s2MultipleCount;
+          vm.drawerItems[1].children[2].count = data.s2SpecialCount;
         }
       }, 1000);
     }
