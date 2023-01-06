@@ -53,7 +53,6 @@ export default {
     
     async initApp() {
       let vm = this;
-
       vm.drawerItems = [
         {
           icon: "fa-solid fa-user-circle",
@@ -111,7 +110,7 @@ export default {
       ];
 
       setInterval(async () => {
-        let {data, status} = await this.$store.dispatch("ascUser/getCountByRole");
+        let {data, status} = await vm.$store.dispatch("ascUser/getCountByRole");
         if([200, 201].includes(status)){
           vm.drawerItems[0].children[0].count = data.individualCount;
           vm.drawerItems[0].children[1].count = data.multipleCount;
@@ -120,7 +119,7 @@ export default {
           vm.drawerItems[1].children[1].count = data.s2MultipleCount;
           vm.drawerItems[1].children[2].count = data.s2SpecialCount;
         }
-      }, 1000);
+      }, 2500);
     }
   },
   mounted() {
