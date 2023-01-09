@@ -92,7 +92,7 @@
                   key="company_name"
                   :props="props"
                 >
-                  {{ props.row.company_name }}
+                {{ props?.row?.company?.name || '' }}
                 </q-td>
                 <q-td
                   key="brand"
